@@ -8,7 +8,7 @@ class puppet::client::package {
   }
 
   case $operatingsystem {
-    rhel: {
+    redhat: {
       class { 'puppet::client::package::redhat': }
     }
   }

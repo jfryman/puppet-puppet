@@ -9,7 +9,7 @@ class puppet::repo {
   }
 
   case $operatingsystem {
-    rhel: {
+    redhat: {
       class { 'puppet::repo::redhat': }
     }
   }
