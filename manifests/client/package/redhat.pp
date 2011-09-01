@@ -1,3 +1,16 @@
+# Class: 
+#
+# Description
+#
+# Parameters:
+#   
+# Actions:
+#
+# Requires:
+#
+# Sample Usage:
+#
+
 class puppet::client::package::redhat {
   $packages = [
     'pe-ruby-libs',

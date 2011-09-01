@@ -1,3 +1,16 @@
+# Class: 
+#
+# Description
+#
+# Parameters:
+#   
+# Actions:
+#
+# Requires:
+#
+# Sample Usage:
+#
+
 class puppet::client::package {
   anchor { 'puppet::client::package::begin': }
   anchor { 'puppet::client::package::end': }

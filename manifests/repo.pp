@@ -1,3 +1,16 @@
+# Class: 
+#
+# Description
+#
+# Parameters:
+#   
+# Actions:
+#
+# Requires:
+#
+# Sample Usage:
+#
+
 class puppet::repo {
   anchor { 'puppet::repo::begin': }
   anchor { 'puppet::repo::end': }
