@@ -1,7 +1,7 @@
-# Class: 
+# Class: puppet
 #
 # Description
-#
+#   NOTE: UNDER DEVELOPMENT
 # Parameters:
 #   
 # Actions:
@@ -10,7 +10,6 @@
 #
 # Sample Usage:
 #
-
 class puppet(
   $type   = 'client',
   $server = ''
