@@ -1,0 +1,3 @@
+class puppet::server::config {
+  
+}
