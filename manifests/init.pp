@@ -4,6 +4,7 @@ class puppet(
   $dashboard    = 'false',
   $server       = '',
   $autosign     = '',
+  $autosign_acl = '',
   $certdnsnames = '',
   $reports      = '',
   $reporturl    = '',
@@ -19,6 +20,9 @@ class puppet(
 
   if $autosign == '' { $REAL_autosign = $puppet::params::pt_puppet_autosign }
   else { $REAL_autosign = $autosign }
+
+  if $autosign_acl == '' { $REAL_autosign_acl = $puppet::params::pt_puppet_autosign_acl }
+  else { $REAL_autosign_acl = $autosign_acl }
 
   if $certdnsnames == '' { $REAL_certdnsnames = $puppet::params::pt_puppet_certdnsnames }
   else { $REAL_certdnsnames = $certdnsnames }
@@ -43,6 +47,7 @@ class puppet(
     class { 'puppet::master':
       server       => $REAL_server,
       autosign     => $REAL_autosign,
+      autosign_acl => $REAL_autosign_acl,
       certdnsnames => $REAL_certdnsnames,
       reports      => $REAL_reports,
       reporturl    => $REAL_reporturl,

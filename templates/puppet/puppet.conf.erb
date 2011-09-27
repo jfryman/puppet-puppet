@@ -1,3 +1,10 @@
+##################################
+# This file is managed by Puppet #
+# Module: puppet                 #
+#                                #
+# Please do not edit directly    #
+##################################
+
 [main]
   vardir = <%= scope.lookupvar('puppet::params::pt_puppet_vardir') %>
   logdir = <%= scope.lookupvar('puppet::params::pt_puppet_logdir') %>

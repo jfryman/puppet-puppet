@@ -16,6 +16,7 @@ class puppet::params {
 
   # Default PuppetMaster Options
   $pt_puppet_autosign     = 'false'
+  $pt_puppet_autosign_acl = [ "*.${::domain}" ]
   $pt_puppet_certdnsnames = [ "${::fqdn}" ]
   $pt_puppet_reports      = ['http', 'store']
   $pt_puppet_reporturl    = 'http://localhost:3000/reports'

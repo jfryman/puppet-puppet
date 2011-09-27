@@ -1,6 +1,7 @@
 class puppet::master(
  $server,
  $autosign,
+ $autosign_acl,
  $certdnsnames,
  $reports,
  $reporturl,
@@ -12,6 +13,7 @@ class puppet::master(
   -> class { 'puppet::master::config': 
        server       => $server,
        autosign     => $autosign,
+       autosign_acl => $autosign_acl,
        certdnsnames => $certdnsnames,
        reports      => $reports,
        reporturl    => $reporturl,
