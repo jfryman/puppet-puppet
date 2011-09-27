@@ -1,24 +1,68 @@
 class puppet(
-  $client = 'true',
-  $server = 'false'
+  $agent        = 'true',
+  $master       = 'false',
+  $dashboard    = 'false',
+  $server       = '',
+  $autosign     = '',
+  $certdnsnames = '',
+  $reports      = '',
+  $reporturl    = '',
+  $enc          = '',
+  $enc_binary   = ''
 ) {
   include stdlib
   include ruby
   include puppet::params
 
-  anchor { 'puppet::begin': }
-  anchor { 'puppet::end': }
+  if $server == '' { $REAL_server = $::fqdn }
+  else { $REAL_server = $server}
 
-  if $server == 'true' { 
-    class { 'puppet::server':
-      require => Anchor['puppet::begin'],
-      before  => Anchor['puppet::end'],
+  if $autosign == '' { $REAL_autosign = $puppet::params::pt_puppet_autosign }
+  else { $REAL_autosign = $autosign }
+
+  if $certdnsnames == '' { $REAL_certdnsnames = $puppet::params::pt_puppet_certdnsnames }
+  else { $REAL_certdnsnames = $certdnsnames }
+
+  if $reports == '' { $REAL_reports = $puppet::params::pt_puppet_reports }
+  else { $REAL_reports = $reports }
+
+  if $reporturl == '' { $REAL_reporturl = $puppet::params::pt_puppet_reporturl }
+  else { $REAL_reporturl = $reporturl }
+
+  if $enc == '' { $REAL_enc = $puppet::params::pt_puppet_enc }
+  else { $REAL_enc = $enc }
+
+  if $enc_binary == '' { $REAL_enc_binary = $puppet::params::pt_puppet_enc_binary }
+  else { $REAL_enc_binary = $enc_binary }
+ 
+  anchor { 'puppet::begin': }
+  -> class { 'puppet::common': }
+  -> anchor { 'puppet::end': }
+
+  if $master == 'true' { 
+    class { 'puppet::master':
+      server       => $REAL_server,
+      autosign     => $REAL_autosign,
+      certdnsnames => $REAL_certdnsnames,
+      reports      => $REAL_reports,
+      reporturl    => $REAL_reporturl,
+      enc          => $REAL_enc,
+      enc_binary   => $REAL_enc_binary,
+      require      => Class['puppet::common'],
+      before       => Anchor['puppet::end'],
     }
   }
-  
-  if $client == 'true' { 
-    class { 'puppet::client': 
-      require => [ Anchor['puppet::begin'], Class['puppet::server'] ],
+ 
+  if $dashboard == 'true' {
+    class { 'puppet::dashboard':
+      require => Class['puppet::common'],
+      before  => Anchor['puppet::end'],
+    } 
+  }
+
+  if $agent == 'true' { 
+    class { 'puppet::agent': 
+      require => Class['puppet::common'],
       before  => Anchor['puppet::end'],
     } 
   }

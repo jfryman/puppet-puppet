@@ -1,0 +1,37 @@
+# ************************************
+# Default template in module puppetlabs-apache
+# Managed by Puppet
+# ************************************
+
+Listen <%= port %>
+NameVirtualHost *:<%= port %>
+<VirtualHost *:<%= port %>>
+  ServerName <%= name %>
+<%if serveraliases.is_a? Array -%>
+<% serveraliases.each do |name| -%><%= "  ServerAlias #{name}\n" %><% end -%>
+<% elsif serveraliases != '' -%>
+<%= "  ServerAlias #{serveraliases}" -%>
+<% end -%>
+
+  SSLEngine on
+  SSLProtocol -ALL +SSLv3 +TLSv1
+  SSLCipherSuite ALL:!ADH:RC4+RSA:+HIGH:+MEDIUM:-LOW:-SSLv2:-EXP
+  SSLCertificateFile /etc/puppet/ssl/certs/<%= name %>.pem 
+  SSLCertificateKeyFile /etc/puppet/ssl/private_keys/<%= name %>.pem 
+  SSLCertificateChainFile /etc/puppet/ssl/certs/ca.pem
+  SSLCACertificateFile /etc/puppet/ssl/ca/ca_crt.pem
+  SSLCARevocationFile /etc/puppet/ssl/ca/ca_crl.pem
+  SSLVerifyClient optional
+  SSLVerifyDepth 1
+  SSLOptions +StdEnvVars
+ 
+  RequestHeader set X-SSL-Subject %{SSL_CLIENT_S_DN}e
+  RequestHeader set X-Client-DN %{SSL_CLIENT_S_DN}e
+  RequestHeader set X-Client-Verify %{SSL_CLIENT_VERIFY}e
+
+  DocumentRoot <%= docroot %>
+  <Directory <%= docroot %>>
+    allow from all
+    Options -MultiViews
+  </Directory>
+</VirtualHost>

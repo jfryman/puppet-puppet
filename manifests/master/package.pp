@@ -1,4 +1,4 @@
-class puppet::server::package {
+class puppet::master::package {
   @package { 'puppet': 
     ensure   => $puppet::params::pt_puppet_version, 
     provider => 'gem',

@@ -1,0 +1,45 @@
+[main]
+  vardir = <%= scope.lookupvar('puppet::params::pt_puppet_vardir') %>
+  logdir = <%= scope.lookupvar('puppet::params::pt_puppet_logdir') %>
+  rundir = <%= scope.lookupvar('puppet::params::pt_puppet_rundir') %>
+  modulepath = <%= scope.lookupvar('puppet::params::pt_puppet_confdir') %>/modules/dist:<%= scope.lookupvar('puppet::params::pt_puppet_confdir') %>/modules/site
+  user = <%= scope.lookupvar('puppet::params::pt_puppet_user') %> 
+  group = <%= scope.lookupvar('puppet::params::pt_puppet_group') %> 
+
+<% # Begin Server Block -%>
+<% if master == 'true' -%>
+[master]
+  certname = <%= server %>
+  certdnsnames = <%= certdnsnames.join(':') %>
+  autosign = <%= autosign %>
+  ssl_client_header = SSL_CLIENT_S_DN
+  ssl_client_verify_header = SSL_CLIENT_VERIFY
+<% # Begin Reporting Block -%>
+<% if reports != '' -%>
+  reports = <%= reports.join(', ') %>
+<% if reports.include?('http') -%>
+  reporturl = <%= reporturl %>
+<% end -%>
+<% end -%>
+<% # End Reporting Block -%>
+<% # Begin ENC Block -%>
+<% if enc != '' -%>
+  node_terminus = <%= enc %> 
+  external_nodes = <%= enc_binary %>
+<% end -%>
+<% # End ENC Block -%>
+<% # End Server Block -%>
+<% end -%>
+
+[agent]
+  certname = <%= fqdn %>
+  server = <%= server %>
+<% # Begin Reporting Block -%>
+<% if reports != '' -%>
+  report = true
+<% end -%>
+<% # End Reporting Block -%>
+  classfile = $vardir/classes.txt
+  localconfig = $vardir/localconfig
+  graph = true
+  pluginsync = true
