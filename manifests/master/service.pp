@@ -1,1 +1,3 @@
-class puppet::master::service {}
+class puppet::master::service {
+  
+}
