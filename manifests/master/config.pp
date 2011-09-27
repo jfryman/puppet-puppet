@@ -1,3 +1,27 @@
+# Class: puppet::master::config
+#
+# Description
+#  This class is designed to configure the system to use Puppet Master on the system
+#  after packages have been deployed. 
+#
+# Parameters:
+#  $server: [Puppet Master] Name of Puppet Master
+#  $autosign: [Puppet Master] Flag to control autosigning of certificates (true|false)
+#  $autosign_acl: [Puppet Master] Array of values to automatically sign certificates. 
+#  $certdnsnames: [Puppet Master] Array of values as subjectAlternateNames for the Puppet Master CA
+#  $reports: [Puppet Master] What report types are configured to be used
+#  $reporturl: [Puppet Master] Location of HTTP Report Type
+#  $enc: [Puppet Master] Type of External Node Terminus 
+#  $enc_binary: [Puppet Master] Path to the ENC binary
+# 
+# Actions:
+#  Sets up Puppet Master Rack, Sets up SSL, sets up Apache vHost
+#
+# Requires:
+#  Apache::Vhost (via Class[apache])
+#
+# Sample Usage:
+#  This module should not be called directly.
 class puppet::master::config(
   $server,
   $autosign,
