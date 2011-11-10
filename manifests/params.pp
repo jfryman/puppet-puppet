@@ -35,19 +35,19 @@
 # Sample Usage:
 #   This method should not be called directly.
 class puppet::params {
-
   # Versions of Puppet to Install
   $pt_facter_version = '1.6.0'
   $pt_puppet_version = '2.6.9'
 
   # Base configuration for Puppet Users
-  $pt_puppet_confdir = '/etc/puppet'
-  $pt_puppet_vardir  = '/var/lib/puppet'
+  $pt_var_base       = '/var/opt/'
+  $pt_puppet_confdir = '/etc/puppetlabs/puppet'
+  $pt_puppet_vardir  = "${pt_var_base}/pe-puppet"
   $pt_puppet_rundir  = "${pt_puppet_vardir}/run"
   $pt_puppet_logdir  = "${pt_puppet_vardir}/log"
-  $pt_puppet_user    = 'puppet'
+  $pt_puppet_user    = 'pe-puppet'
   $pt_puppet_uid     = '401'
-  $pt_puppet_group   = 'puppet'
+  $pt_puppet_group   = 'pe-puppet'
   $pt_puppet_gid     = '401'
 
   # Default PuppetMaster Options
@@ -65,10 +65,26 @@ class puppet::params {
                                      "${pt_puppet_rackdir}/public",
                                    ]
 
-  $pt_puppet_base_directories = [ "${pt_puppet_confdir}", 
+  $pt_puppet_base_directories = [ "${pt_var_base}",               
+                                  "${pt_var_base}/lib",           
+                                  "${pt_puppet_confdir}",
+                                  "${pt_puppet_confdir}/environments",
                                   "${pt_puppet_confdir}/modules",
                                   "${pt_puppet_confdir}/modules/site",
                                   "${pt_puppet_confdir}/modules/dist",
                                   "${pt_puppet_confdir}/manifests",
+                                  $pt_puppet_rundir,
                                 ]
+  
+  case $::operatingsystem {
+    redhat,centos,fedora: {
+      $pt_puppet_agent_packages = [ 'pe-augeas', 'pe-augeas-libs', 'pe-facter', 
+                                    'pe-puppet', 'pe-puppet-enterprise-release',
+                                    'pe-ruby', 'pe-ruby-augeas', 'pe-rubygem-puppet-module',
+                                    'pe-rubygems', 'pe-ruby-irb', 'pe-ruby-ldap', 
+                                    'pe-ruby-libs', 'pe-ruby-rdoc', 'pe-ruby-ri',
+                                    'pe-ruby-shadow',
+                                  ]
+    }
+  }
 }
