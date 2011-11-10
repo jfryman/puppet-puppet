@@ -35,16 +35,21 @@
 #  }
 class puppet(
   $agent        = 'true',
-  $environment  = 'production'
+  $environment  = 'production',
+  $puppetmaster = ''
 ) {
   include stdlib
   include puppet::params
-  
+ 
+  if $puppetmaster == '' { $REAL_puppetmaster = $puppet::params::pt_puppetmaster }
+  else { $REAL_puppetmaster = $puppetmaster }
+
   if $agent == 'true' { 
     class { 'puppet::agent': 
-      environment => $environment,
-      require     => Anchor['puppet::begin::agent'],
-      before      => Anchor['puppet::end::agent'],
+      environment  => $environment,
+      puppetmaster => $REAL_puppetmaster,
+      require      => Anchor['puppet::begin::agent'],
+      before       => Anchor['puppet::end::agent'],
     } 
   }
   

@@ -35,6 +35,8 @@
 # Sample Usage:
 #   This method should not be called directly.
 class puppet::params {
+  $pt_puppetmaster = 'puppetmaster.us.chs.net'
+
   # Versions of Puppet to Install
   $pt_facter_version = '1.6.0'
   $pt_puppet_version = '2.6.9'

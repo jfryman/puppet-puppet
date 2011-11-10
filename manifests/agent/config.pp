@@ -1,4 +1,7 @@
-class puppet::agent::config {
+class puppet::agent::config(
+  $environment,
+  $puppetmaster
+) {
   File {
     owner => $puppet::params::pt_puppet_user,
     group => $puppet::params::pt_puppet_group,
