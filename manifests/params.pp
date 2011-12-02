@@ -45,12 +45,14 @@ class puppet::params {
   $pt_var_base       = '/var/opt/'
   $pt_puppet_confdir = '/etc/puppetlabs/puppet'
   $pt_puppet_vardir  = "${pt_var_base}/pe-puppet"
-  $pt_puppet_rundir  = "${pt_puppet_vardir}/run"
-  $pt_puppet_logdir  = "${pt_puppet_vardir}/log"
+  $pt_puppet_rundir  = "/var/run/pe-puppet"
+  $pt_puppet_logdir  = "/var/log/pe-puppet"
   $pt_puppet_user    = 'pe-puppet'
   $pt_puppet_uid     = '401'
   $pt_puppet_group   = 'pe-puppet'
   $pt_puppet_gid     = '401'
+  $pt_puppet_home    = '/var/opt/lib/pe-puppet'
+  $pt_puppet_shell   = '/sbin/nologin'
 
   # Default PuppetMaster Options
   $pt_puppet_autosign     = 'false'
@@ -67,8 +69,8 @@ class puppet::params {
                                      "${pt_puppet_rackdir}/public",
                                    ]
 
-  $pt_puppet_base_directories = [ "${pt_var_base}",               
-                                  "${pt_var_base}/lib",           
+  $pt_puppet_base_directories = [ "${pt_var_base}",
+                                  "${pt_var_base}/lib",
                                   "${pt_puppet_confdir}",
                                   "${pt_puppet_confdir}/environments",
                                   "${pt_puppet_confdir}/modules",
@@ -77,7 +79,7 @@ class puppet::params {
                                   "${pt_puppet_confdir}/manifests",
                                   $pt_puppet_rundir,
                                 ]
-  
+
   case $::operatingsystem {
     redhat,centos,fedora: {
       $pt_puppet_agent_packages = [ 'pe-augeas', 'pe-augeas-libs', 'pe-facter', 
