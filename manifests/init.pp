@@ -23,36 +23,42 @@
 #   This module will install Puppet and configure it to build 
 #
 # Requires:
-#  - Class[ruby]. Class to install Ruby on a system
-#  - Class[apache]. Puppet Labs class to install Apache. [https://github.com/puppetlabs/puppetlabs-apache]
 #  - Class[stdlib]. This is Puppet Labs standard library to include additional methods for use within Puppet. [https://github.com/puppetlabs/puppetlabs-stdlib]
 #
 # Sample Usage:
-#  class { 'puppet': 
+#  class { 'puppet':
 #    master => 'true',
 #    server => 'puppetmaster.us.chs.net',
 #    autosign => 'true',
 #  }
 class puppet(
   $agent        = 'true',
+  $master       = 'false',
   $environment  = 'production',
   $puppetmaster = ''
 ) {
   include stdlib
   include puppet::params
- 
+
   if $puppetmaster == '' { $REAL_puppetmaster = $puppet::params::pt_puppetmaster }
   else { $REAL_puppetmaster = $puppetmaster }
 
-  if $agent == 'true' { 
-    class { 'puppet::agent': 
+  if $agent == 'true' {
+    class { 'puppet::agent':
       environment  => $environment,
       puppetmaster => $REAL_puppetmaster,
       require      => Anchor['puppet::begin::agent'],
       before       => Anchor['puppet::end::agent'],
-    } 
+    }
   }
-  
+
+  if $master == 'true' {
+    class { 'puppet::master':
+      require => Anchor['puppet::begin::master'],
+      before  => Anchor['puppet::end::master'],
+    }
+  }
+
   # Anchors
   anchor { 'puppet::begin': }
   -> anchor { 'puppet::begin::master': }

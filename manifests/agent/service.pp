@@ -1,5 +1,5 @@
 class puppet::agent::service {
-  service { 'pe-puppet': 
+  service { 'pe-puppet':
     ensure     => 'running',
     enable     => 'true',
     hasstatus  => 'true',
